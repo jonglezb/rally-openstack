@@ -342,6 +342,14 @@ class NeutronWrapper(NetworkWrapper):
         """
         return self.neutron.create_port(network_id=network_id, **kwargs)
 
+    def create_bulk_ports(self, bulk_ports):
+        """Create neutron port.
+
+        :param bulk_ports: list of neutron port dict
+        :returns: neutron ports list
+        """
+        return self.neutron.create_bulk_ports(bulk_ports)
+
     def create_floating_ip(self, ext_network=None,
                            tenant_id=None, port_id=None, **kwargs):
         """Create Neutron floating IP.

@@ -817,6 +817,21 @@ class NeutronService(service.Service):
         )
         return self.client.create_port({"port": body})["port"]
 
+    @atomic.action_timer("neutron.create_bulk_ports")
+    def create_bulk_ports(self, bulk_ports):
+        """Create several neutron ports in one bulk API request.
+
+        :param bulk_ports: list of neutron port dict
+        :returns: neutron ports list
+        """
+        final_ports = list()
+        for port in bulk_ports:
+            final_ports.append(_clean_dict(
+                name=self.generate_random_name(),
+                **port
+            ))
+        return self.client.create_port({"ports": final_ports})["ports"]
+
     @atomic.action_timer("neutron.show_port")
     def get_port(self, port_id, fields=_NONE):
         """Get port details
